@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.jboss.quickstarts.eap</groupId>
+  <artifactId>jboss-helloworld-ear</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>ear</packaging>
+  <name>JBoss EAP Quickstart: helloworld-ear</name>
+  <description>JBoss EAP Quickstart: Helloworld EAR</description>
+
+  <parent>
+    <groupId>org.jboss.quickstarts.eap</groupId>
+    <artifactId>jboss-helloworld</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.jboss.quickstarts.eap</groupId>
+      <artifactId>jboss-helloworld-mdb</artifactId>
+      <type>ejb</type>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.quickstarts.eap</groupId>
+      <artifactId>jboss-helloworld-web</artifactId>
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <sourceDirectory>src/main/application</sourceDirectory>
+    <finalName>${project.artifactId}</finalName>
+    <plugins>
+      <plugin>
+        <artifactId>maven-ear-plugin</artifactId>
+        <version>2.10.1</version>
+        <configuration>
+          <version>5</version>
+          <finalName>jboss-helloworld-ear</finalName>
+          <defaultLibBundleDir>lib</defaultLibBundleDir>
+          <modules>
+            <ejbModule>
+              <groupId>${project.groupId}</groupId>
+              <artifactId>jboss-helloworld-mdb</artifactId>
+              <bundleFileName>jboss-helloworld-mdb.jar</bundleFileName>
+            </ejbModule>
+            <webModule>
+              <groupId>${project.groupId}</groupId>
+              <artifactId>jboss-helloworld-web</artifactId>
+              <bundleFileName>jboss-helloworld-web.war</bundleFileName>
+            </webModule>
+          </modules>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

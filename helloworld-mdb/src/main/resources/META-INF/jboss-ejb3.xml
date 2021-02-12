@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss:ejb-jar
+  xmlns:jboss="http://www.jboss.com/xml/ns/javaee"
+  xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+  http://java.sun.com/xml/ns/javaee  http://xmlns.jcp.org/xml/ns/javaee/ejb-jar_3_2.xsd
+  http://www.jboss.com/xml/ns/javaee http://www.jboss.org/j2ee/schema/jboss-ejb3-2_0.xsd
+  "
+  xmlns:mdb="urn:resource-adapter-binding" version="3.2">
+  <assembly-descriptor>
+    <mdb:resource-adapter-binding>
+      <ejb-name>HelloWorldQueueMDB</ejb-name>
+      <mdb:resource-adapter-name>wmq.jmsra</mdb:resource-adapter-name>
+    </mdb:resource-adapter-binding>
+    <mdb:resource-adapter-binding>
+      <ejb-name>HelloWorldQueueMDBSecond</ejb-name>
+      <mdb:resource-adapter-name>wmq.jmsra</mdb:resource-adapter-name>
+    </mdb:resource-adapter-binding>
+    <!-- mdb:resource-adapter-binding> <ejb-name>HelloWorldTopicMDB</ejb-name> 
+      <mdb:resource-adapter-name>wmq.jmsra</mdb:resource-adapter-name> </mdb:resource-adapter-binding> 
+      <mdb:resource-adapter-binding> <ejb-name>HelloWorldTopicMDBSecond</ejb-name> 
+      <mdb:resource-adapter-name>wmq.jmsra</mdb:resource-adapter-name> </mdb:resource-adapter-binding -->
+  </assembly-descriptor>
+</jboss:ejb-jar>

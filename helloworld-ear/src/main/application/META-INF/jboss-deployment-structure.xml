@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-deployment-structure
+  xmlns="urn:jboss:deployment-structure:1.2">
+  <ear-subdeployments-isolated>false</ear-subdeployments-isolated>
+
+  <deployment>
+    <exclude-subsystems>
+      <subsystem name="logging" />
+    </exclude-subsystems>
+  </deployment>
+
+  <sub-deployment name="jboss-helloworld-mdb.jar">
+    <dependencies>
+      <module
+        name="org.jboss.quickstarts.eap.jboss-helloworld-mdb.log4j2" />
+      <module name="org.apache.logging.log4j2" />
+      <module name="org.jboss.remote-naming" />
+      <module name="javaee.api" />
+    </dependencies>
+  </sub-deployment>
+
+  <sub-deployment name="jboss-helloworld-web.war">
+    <dependencies>
+      <module
+        name="org.jboss.quickstarts.eap.jboss-helloworld-web.log4j2" />
+      <module name="org.apache.logging.log4j2" />
+      <module name="org.jboss.remote-naming" />
+      <module name="javaee.api" />
+    </dependencies>
+  </sub-deployment>
+</jboss-deployment-structure>

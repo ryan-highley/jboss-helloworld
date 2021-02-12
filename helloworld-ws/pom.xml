@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.jboss.quickstarts.eap</groupId>
+  <artifactId>jboss-helloworld-ws</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <name>JBoss EAP Quickstart: helloworld-ws</name>
+  <description>JBoss EAP Quickstart: Hello World JAX-WS Web service</description>
+  <url>http://www.jboss.org/products/eap</url>
+
+  <parent>
+    <groupId>org.jboss.quickstarts.eap</groupId>
+    <artifactId>jboss-helloworld</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <properties>
+    <!-- JBoss dependency versions -->
+    <version.wildfly.maven.plugin>1.0.2.Final</version.wildfly.maven.plugin>
+
+    <!-- other plug-in versions -->
+    <version.war.plugin>2.1.1</version.war.plugin>
+    <version.surefire.plugin>2.10</version.surefire.plugin>
+
+    <!-- Remote Server URL -->
+    <remote.server.url>http://localhost:8080/</remote.server.url>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.spec.javax.servlet</groupId>
+      <artifactId>jboss-servlet-api_3.1_spec</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.spec.javax.annotation</groupId>
+      <artifactId>jboss-annotations-api_1.3_spec</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.spec.javax.xml.ws</groupId>
+      <artifactId>jboss-jaxws-api_2.3_spec</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.arquillian.junit</groupId>
+      <artifactId>arquillian-junit-container</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <!-- Set the name of the WAR, used as the context root when the app is 
+      deployed -->
+    <finalName>${project.artifactId}</finalName>
+    <plugins>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
+      </plugin>
+      <!-- WildFly plug-in to deploy the WAR -->
+      <plugin>
+        <groupId>org.wildfly.plugins</groupId>
+        <artifactId>wildfly-maven-plugin</artifactId>
+        <version>${version.wildfly.maven.plugin}</version>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <!-- The default profile skips all tests, though you can tune it to 
+        run just unit tests based on a custom pattern -->
+      <!-- Separate profiles are provided for running all tests -->
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-war-plugin</artifactId>
+          </plugin>
+          <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>${version.surefire.plugin}</version>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <!-- An optional testing profile that executes tests in your JBoss 
+        EAP instance using Arquillian -->
+      <!-- This profile will start a new JBoss EAP instance, and execute 
+        the test, shutting it down when done -->
+      <!-- Run with: mvn clean test -Parq-wildfly-managed -->
+      <id>arq-wildfly-managed</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.wildfly.arquillian</groupId>
+          <artifactId>wildfly-arquillian-container-managed</artifactId>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>${version.surefire.plugin}</version>
+            <configuration>
+              <excludes>
+                <exclude>**/ClientTest.java</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <!-- An optional Arquillian testing profile that executes tests in 
+        a remote JBoss EAP instance -->
+      <!-- Run with: mvn clean test -Parq-wildfly-remote -->
+      <id>arq-wildfly-remote</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.wildfly.arquillian</groupId>
+          <artifactId>wildfly-arquillian-container-remote</artifactId>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>${version.surefire.plugin}</version>
+            <configuration>
+              <excludes>
+                <exclude>**/ClientTest.java</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <!-- An optional testing profile that executes tests in a remote JBoss 
+        EAP instance where the application has already been deployed -->
+      <!-- Run with: mvn clean test -Pjbossas-remote -->
+      <id>jbossas-remote</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>${version.surefire.plugin}</version>
+            <configuration>
+              <systemProperties>
+                <property>
+                  <name>serverUrl</name>
+                  <value>${remote.server.url}</value>
+                </property>
+              </systemProperties>
+              <excludes>
+                <exclude>**/ClientArqTest.java</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <!-- When built in OpenShift the 'openshift' profile will be used when 
+        invoking mvn. -->
+      <!-- Use this profile for any OpenShift specific customization your 
+        app will need. -->
+      <!-- By default that is to put the resulting archive into the 'deployments' 
+        folder. -->
+      <!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
+      <id>openshift</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-war-plugin</artifactId>
+            <configuration>
+              <outputDirectory>deployments</outputDirectory>
+              <warName>${project.artifactId}</warName>
+              <failOnMissingWebXml>false</failOnMissingWebXml>
+            </configuration>
+          </plugin>
+          <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>${version.surefire.plugin}</version>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>
